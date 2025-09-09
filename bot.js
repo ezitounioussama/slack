@@ -23,7 +23,10 @@ app.command('/hello', async ({ command, ack, respond }) => {
 app.event('message', async ({ event }) => {
   if ('subtype' in event && event.subtype !== undefined) return;
 
-  console.log(`Message from ${event.user}: ${event.text}`);
+  // Format Slack event_ts (e.g., "1693965159.123456") into local time
+  const tsMs = Math.floor(parseFloat(event.event_ts) * 1000);
+  const localTime = new Date(tsMs).toLocaleString();
+  console.log(`Message from ${event.user} : ${event.text} at ${localTime}`);
 });
 
 // Start app
